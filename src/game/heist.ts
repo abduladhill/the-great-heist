@@ -1,4 +1,4 @@
-export type Mission = "artifacts" | "vault" | "data" | "training";
+export type Mission = "artifacts" | "vault" | "data" | "annex" | "training";
 export type Difficulty = "easy" | "normal" | "hard";
 export type Gadget = "smoke" | "jammer";
 export interface Point {
@@ -125,6 +125,11 @@ export const MISSIONS: Record<Mission, { title: string; description: string }> =
       title: "Ghost in the System",
       description:
         "Download all three archives across both floors, then escape.",
+    },
+    annex: {
+      title: "The Research Wing",
+      description:
+        "Breach three research archives in the north annex. Hold E together at an archive to hack faster, then extract.",
     },
     training: {
       title: "Practice",

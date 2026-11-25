@@ -2,28 +2,42 @@ import { test, expect } from "@playwright/test";
 import type { Page } from "@playwright/test";
 async function move(page: Page, axis: "cx" | "cy", target: number) {
   const dot = page.locator(".map svg>circle").last();
-  const current = Number(await dot.getAttribute(axis));
-  if (Math.abs(current - target) < 0.18) return;
-  const positive = target > current,
+  const initial = Number(await dot.getAttribute(axis));
+  if (Math.abs(initial - target) < 0.2) return;
+  const positive = target > initial,
     key =
       axis === "cx" ? (positive ? "KeyD" : "KeyA") : positive ? "KeyS" : "KeyW";
   await page.keyboard.down("ShiftLeft");
   await page.keyboard.down(key);
   try {
+    if (Math.abs(initial - target) > 2.5) {
+      await expect
+        .poll(
+          async () => {
+            const n = Number(await dot.getAttribute(axis));
+            return positive ? n >= target - 2.5 : n <= target + 2.5;
+          },
+          { timeout: 45000, intervals: [30] },
+        )
+        .toBe(true);
+    }
+    await page.keyboard.up("ShiftLeft");
+    await page.keyboard.down("KeyC");
     await expect
       .poll(
         async () => {
           const n = Number(await dot.getAttribute(axis));
-          return positive ? n >= target - 0.16 : n <= target + 0.16;
+          return positive ? n >= target - 0.08 : n <= target + 0.08;
         },
-        { timeout: 18000, intervals: [30] },
+        { timeout: 45000, intervals: [30] },
       )
       .toBe(true);
   } finally {
     await page.keyboard.up(key);
     await page.keyboard.up("ShiftLeft");
+    await page.keyboard.up("KeyC");
   }
-  await page.waitForTimeout(160);
+  await page.waitForTimeout(140);
 }
 async function interact(page: Page, expected: number) {
   await page.keyboard.down("KeyE");

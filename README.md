@@ -1,4 +1,4 @@
-# The Great Heist: Museum Edition — v1.0
+# The Great Heist: Museum Edition — v2.0
 
 A complete small-scope 3D heist game: one two-floor museum, private 2–4 player co-op, solo missions, guards, cameras, lasers, objectives, extraction, results, saved progression and rematches. Built with React, Vite, Three.js and Socket.IO.
 
@@ -109,3 +109,11 @@ Online clients send inputs at about 30 Hz. The server runs movement at 120 Hz, m
 This is a complete private-game MVP, not a commercial-scale service. Desktop keyboard/mouse only; no mobile/controller controls. One museum, three fixed contracts, simple procedural art/audio and static kinematic physics. Teammates can pass through one another. Shadows may alias and the camera can pull close near narrow railings. Rooms and profiles are designed for one Node process. Internet latency, cross-browser/device coverage and production load capacity are not established by local tests. No accounts, voice chat, open world, extra maps, matchmaking or cash shop are claimed.
 
 All art is generated locally in code. Optional Google Fonts improve the interface; system fonts work offline. No API keys or paid asset services are required. Earlier Phase 1 and Phase 2 archives remain alongside this release.
+
+## Version 2 development preview
+
+The north research wing expands the ground floor from 28 × 32 m to 28 × 40 m (25% more floor area). Two separated entrances allow alternate approaches; cover blocks break sight lines. The Research Wing contract adds three archives in the annex. Each active teammate holding E within sight and range of the same terminal adds 50% hacking speed. Solo hacking remains possible. This preview is local and has not replaced the live version.
+
+## Version 2 expanded museum
+
+The museum footprint is now 44 × 48 m: 2,112 square metres, 2.36 times the original ground-floor footprint. Antiquities and Modern Art wings have display sculptures, cover and multiple connecting routes. The Research Wing contract spans the west wing, north archives and east wing. Two extra optional artifacts support alternate collection routes. Guards wear blue security uniforms, caps and badges; vision cones use amber for patrol, orange for investigation and red for pursuit. Nearby teammates holding E accelerate archive hacking, while solo play remains supported.

@@ -1,10 +1,53 @@
 import * as T from "three";
-import { buildPlayer } from "./museum";
+function buildGuard() {
+  const root = new T.Group();
+  const navy = new T.MeshStandardMaterial({
+    color: "#294e88",
+    roughness: 0.85,
+  });
+  const black = new T.MeshStandardMaterial({ color: "#101923" });
+  const skin = new T.MeshStandardMaterial({ color: "#c59a75" });
+  const gold = new T.MeshStandardMaterial({
+    color: "#ffcf45",
+    emissive: "#ad6b00",
+    emissiveIntensity: 0.25,
+  });
+  function part(
+    w: number,
+    h: number,
+    d: number,
+    x: number,
+    y: number,
+    z: number,
+    mat: T.Material,
+  ) {
+    const m = new T.Mesh(new T.BoxGeometry(w, h, d), mat);
+    m.position.set(x, y, z);
+    m.castShadow = true;
+    root.add(m);
+    return m;
+  }
+  part(0.76, 0.72, 0.43, 0, 1.08, 0, navy);
+  part(0.42, 0.42, 0.4, 0, 1.66, 0, skin);
+  part(0.57, 0.18, 0.52, 0, 1.91, 0, navy);
+  part(0.55, 0.055, 0.25, 0, 1.84, -0.3, black);
+  part(0.13, 0.16, 0.035, -0.2, 1.22, -0.235, gold);
+  part(0.77, 0.1, 0.45, 0, 0.77, 0, black);
+  part(0.48, 0.07, 0.025, 0, 1.07, 0.23, gold);
+  part(0.2, 0.65, 0.25, -0.49, 1.05, 0, navy);
+  part(0.2, 0.65, 0.25, 0.49, 1.05, 0, navy);
+  part(0.09, 0.55, 0.09, 0.55, 0.62, -0.12, black);
+  const legs = [
+    part(0.26, 0.66, 0.3, -0.2, 0.35, 0, black),
+    part(0.26, 0.66, 0.3, 0.2, 0.35, 0, black),
+  ];
+  return { root, legs };
+}
 import { CAMERAS, LASERS, EXIT, JAIL, DIFFICULTIES } from "../game/heist";
 import type { HeistState, Contract } from "../game/heist";
 export class HeistView {
   root = new T.Group();
-  private guards = new Map<string, ReturnType<typeof buildPlayer>>();
+  private guards = new Map<string, ReturnType<typeof buildGuard>>();
   private cones = new Map<string, T.Mesh>();
   private loot = new Map<string, T.Group>();
   private clouds = new Map<string, T.Mesh>();
@@ -136,17 +179,7 @@ export class HeistView {
       marker.rotation.z = Math.PI;
     }
     for (const g of h.guards) {
-      const avatar = buildPlayer("#c49754");
-      avatar.accent.color.set("#c49754");
-      const hat = add(
-        new T.BoxGeometry(0.56, 0.14, 0.52),
-        material("#354357"),
-        0,
-        1.86,
-        0,
-        avatar.root,
-      );
-      hat.castShadow = true;
+      const avatar = buildGuard();
       this.root.add(avatar.root);
       this.guards.set(g.id, avatar);
       const geometry = new T.CircleGeometry(
@@ -158,9 +191,9 @@ export class HeistView {
       const cone = add(
         geometry,
         new T.MeshBasicMaterial({
-          color: "#e3c173",
+          color: "#ffb020",
           transparent: true,
-          opacity: 0.1,
+          opacity: 0.22,
           side: T.DoubleSide,
           depthWrite: false,
         }),
@@ -206,10 +239,16 @@ export class HeistView {
       a.legs[0].rotation.x = stride;
       a.legs[1].rotation.x = -stride;
       const cone = this.cones.get(g.id)!;
+      (cone.material as T.MeshBasicMaterial).opacity =
+        g.mode === "chase" ? 0.34 : 0.22;
       cone.position.set(g.x, g.y + 0.04, g.z);
       cone.rotation.set(-Math.PI / 2, 0, g.yaw);
       (cone.material as T.MeshBasicMaterial).color.set(
-        g.mode === "chase" ? "#ff695c" : "#e3c173",
+        g.mode === "chase"
+          ? "#ff304f"
+          : g.mode === "investigate"
+            ? "#ff781f"
+            : "#ffb020",
       );
     }
     for (const l of h.loot) {

@@ -3,7 +3,7 @@ import { RoomStore } from "./rooms";
 import { findPath, hasSight } from "./navigation";
 import { EXIT, JAIL, DIFFICULTIES } from "../src/game/heist";
 function setup(
-  mission: "artifacts" | "vault" | "data" = "artifacts",
+  mission: "artifacts" | "vault" | "data" | "annex" = "artifacts",
   solo = true,
 ) {
   const store = new RoomStore();
@@ -175,4 +175,38 @@ describe("museum heist rules", () => {
     advance(f.director, 0.05);
     expect(["investigate", "chase"]).toContain(g.mode);
   });
+});
+
+it("research wing archives are reachable through both annex entrances", () => {
+  for (const x of [-11, 11]) {
+    const path = findPath({ x, y: 0, z: -14 }, { x, y: 0, z: -21 });
+    expect(path.at(-1)?.z).toBe(-21);
+    expect(path.some((p) => Math.abs(p.x) >= 7 && Math.abs(p.x) <= 9)).toBe(
+      true,
+    );
+  }
+});
+it("research contract can be completed solo", () => {
+  const f = setup("annex");
+  for (const l of f.director.state.loot) collect(f, l.id);
+  advance(f.director, 0.1);
+  expect(f.director.state.objectiveReady).toBe(true);
+});
+it("nearby teammates accelerate terminal hacking", () => {
+  const f = setup("annex", false);
+  const target = f.director.state.loot[0];
+  for (const p of f.room.players.values()) {
+    Object.assign(p.state, target);
+    p.holding = true;
+    p.operative.immuneUntil = 1000;
+  }
+  advance(f.director, 2.8);
+  expect(target.taken).toBe(true);
+});
+
+it("expanded wings connect to the lobby and research archives", () => {
+  for(const to of [{x:-18,y:0,z:4},{x:18,y:0,z:4},{x:-18,y:0,z:-22},{x:18,y:0,z:-22},{x:0,y:0,z:-25}]) {
+    const path=findPath({x:0,y:0,z:12},to);
+    expect(path.at(-1)).toMatchObject(to);
+  }
 });

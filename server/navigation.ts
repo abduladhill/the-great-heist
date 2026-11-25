@@ -1,4 +1,4 @@
-import { collisionBoxes, decks, rampHeight } from "../src/world/layout";
+import { BOUNDS, collisionBoxes, decks, rampHeight } from "../src/world/layout";
 import { createPlayer, overlaps } from "../src/game/movement";
 import type { Point } from "../src/game/heist";
 interface Node extends Point {
@@ -7,8 +7,8 @@ interface Node extends Point {
 }
 const nodes: Node[] = [];
 const columns = new Map<string, number[]>();
-for (let x = -13; x <= 13; x++)
-  for (let z = -15; z <= 15; z++) {
+for (let x = BOUNDS.x0 + 1; x < BOUNDS.x1; x++)
+  for (let z = BOUNDS.z0 + 1; z < BOUNDS.z1; z++) {
     const ramp = rampHeight(x, z);
     const heights = [
       ramp === null

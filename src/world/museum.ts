@@ -1,5 +1,5 @@
 import * as T from "three";
-import { solids, stairSteps, STAIR, UPPER } from "./layout";
+import { BOUNDS, solids, stairSteps, STAIR, UPPER } from "./layout";
 
 export function buildMuseum(scene: T.Scene) {
   const materials = new Map<string, T.MeshStandardMaterial>();
@@ -56,9 +56,9 @@ export function buildMuseum(scene: T.Scene) {
     mesh.rotation.y = rotation;
     scene.add(mesh);
   }
-  cube(0, -0.22, 0, 28, 0.44, 32, "#c0c2b5");
-  for (let x = -13; x < 14; x += 2)
-    for (let z = -15; z < 16; z += 2) {
+  cube(0, -0.22, -4, 44, 0.44, 48, "#c0c2b5");
+  for (let x = BOUNDS.x0 + 1; x < BOUNDS.x1; x += 2)
+    for (let z = BOUNDS.z0 + 1; z < BOUNDS.z1; z += 2) {
       cube(
         x,
         0.005,
@@ -69,6 +69,23 @@ export function buildMuseum(scene: T.Scene) {
         (x + z) % 4 === 0 ? "#c4c6ba" : "#b5bcb3",
       );
     }
+  label("03 / ANTIQUITIES", -18, 2.8, -27.8, 6);
+  label("04 / MODERN ART", 18, 2.8, -27.8, 6);
+  label("05 / RESEARCH ARCHIVES", 0, 2.8, -27.8, 9);
+  for (const x of [-18, 18]) {
+    for (const z of [-10, 8]) {
+      const exhibit = new T.Mesh(
+        new T.IcosahedronGeometry(0.85, 0),
+        mat(x < 0 ? "#d2ad65" : "#63b8c0", 0.4),
+      );
+      exhibit.position.set(x, 2.45, z);
+      exhibit.castShadow = true;
+      scene.add(exhibit);
+    }
+    const light = new T.PointLight("#d8e8ff", 35, 25, 2);
+    light.position.set(x, 5, -2);
+    scene.add(light);
+  }
   for (const b of solids) {
     if (b.id.includes("rail")) {
       cube(b.x, b.y + 0.5, b.z, b.w, 0.09, b.d, b.color);

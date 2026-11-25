@@ -76,9 +76,10 @@ describe("fixed-step player simulation", () => {
   });
   it("blocks outer walls even at sprint speed", () => {
     const p = createPlayer();
+    p.x = 20; p.z = 16;
     advance(p, { right: 1, sprint: true }, 5);
-    expect(p.x).toBeLessThanOrEqual(13.68);
-    expect(p.x).toBeGreaterThan(13.5);
+    expect(p.x).toBeLessThanOrEqual(21.68);
+    expect(p.x).toBeGreaterThan(21.5);
   });
   it("blocks exhibits", () => {
     const p = createPlayer();
@@ -89,11 +90,11 @@ describe("fixed-step player simulation", () => {
   });
   it("slides alongside walls", () => {
     const p = createPlayer();
-    p.x = -13.6;
+    p.x = -21.6;
     p.z = 7;
     advance(p, { forward: 1, right: -1 }, 1);
     expect(p.z).toBeLessThan(5);
-    expect(p.x).toBeGreaterThan(-13.7);
+    expect(p.x).toBeGreaterThan(-21.7);
   });
   it("climbs the entire staircase and reaches upper deck", () => {
     const p = createPlayer();

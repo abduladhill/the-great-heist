@@ -37,3 +37,11 @@ The local release archive includes test-results screenshots: menu, ground-floor,
 ## Limits
 
 These tests run on one computer; they do not establish internet latency, cross-device compatibility or production load capacity. Rooms live in one server process. Saved anonymous profiles require persistent disk storage and have no account recovery. Docker configuration is provided but was not built because Docker is unavailable in this environment. A public hosted game has not been deployed.
+
+## Version 2 verification — 25 November 2026
+
+Production build passed. All 52 unit/integration tests passed, including enlarged boundary collision, navigation into both exhibition wings, solo research objectives and cooperative hacking.
+
+Eight browser scenarios passed across the final suite and targeted reruns: vault, data, research annex, two-player artifact heist and rematch, four-player session/reconnect, invalid room, movement/stairs and camera fallback. The first complete run had two mission-route failures; restoring sprint travel with slower approaches fixed these in targeted reruns. The new research contract was completed using real controls and extraction. These are local checks, not public deployment verification.
+
+Version 2 adds a 44 × 48 m footprint, two exhibition wings, research archives, optional artifacts, cooperative terminal hacking and distinct guard models/vision colours. The public deployment remains version 1 until this version is published.

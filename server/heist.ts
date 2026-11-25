@@ -45,6 +45,8 @@ const ARTIFACTS: Point[] = [
   { x: -11, y: 4.5, z: 5 },
   { x: 5, y: 4.5, z: 13 },
   { x: 11, y: 4.5, z: -12 },
+  { x: -18, y: 0, z: 4 },
+  { x: 18, y: 0, z: 4 },
 ];
 interface Brain {
   route: number;
@@ -78,9 +80,15 @@ export class HeistDirector {
             kind: "artifact",
             taken: false,
           }))
-        : (room.contract.mission === "vault"
-            ? TERMINALS.slice(0, 2)
-            : TERMINALS
+        : (room.contract.mission === "annex"
+            ? [
+                { x: -18, y: 0, z: -22 },
+                { x: 0, y: 0, z: -25 },
+                { x: 18, y: 0, z: -22 },
+              ]
+            : room.contract.mission === "vault"
+              ? TERMINALS.slice(0, 2)
+              : TERMINALS
           ).map((p, i) => ({
             ...p,
             id: `terminal-${i}`,
@@ -236,7 +244,22 @@ export class HeistDirector {
     }
     if (o.interaction !== id) o.progress = 0;
     o.interaction = id;
-    o.progress += dt / duration;
+    const assistants =
+      target?.kind === "terminal"
+        ? [...this.room.players.values()].filter(
+            (q) =>
+              q.id !== p.id &&
+              this.active(q) &&
+              q.holding &&
+              !q.state.sprinting &&
+              distance(q.state, target!) < 2 &&
+              hasSight(
+                { ...q.state, y: q.state.y + 0.8 },
+                { ...target!, y: target!.y + 0.8 },
+              ),
+          ).length
+        : 0;
+    o.progress += (dt / duration) * (1 + assistants * 0.5);
     if (o.progress < 1) return;
     o.progress = 0;
     p.holding = false;

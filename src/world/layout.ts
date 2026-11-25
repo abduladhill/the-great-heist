@@ -1,5 +1,6 @@
 import type { Box, Surface } from "../game/types";
 export const UPPER = 4.5;
+export const BOUNDS = { x0: -22, x1: 22, z0: -28, z1: 20 };
 export const SPAWN = { x: 0, y: 0, z: 12 };
 export const STAIR = { x0: 8, x1: 11, z0: -8, z1: 8 };
 export const decks: Surface[] = [
@@ -19,10 +20,40 @@ const box = (
   color = "#52666a",
 ): Box => ({ id, x, y, z, w, h, d, color });
 export const solids: Box[] = [
-  box("west wall", -14.25, 4.5, 0, 0.5, 9, 32.5),
-  box("east wall", 14.25, 4.5, 0, 0.5, 9, 32.5),
-  box("north wall", 0, 4.5, -16.25, 28, 9, 0.5),
-  box("south wall", 0, 4.5, 16.25, 28, 9, 0.5),
+  box("west wall", -22.25, 4.5, -4, 0.5, 9, 48.5),
+  box("east wall", 22.25, 4.5, -4, 0.5, 9, 48.5),
+  box("north wall", 0, 4.5, -28.25, 44, 9, 0.5),
+  box("annex divider center", 0, 1.8, -16, 12, 3.6, 0.4),
+  box("annex divider west", -12, 1.8, -16, 4, 3.6, 0.4),
+  box("annex divider east", 12, 1.8, -16, 4, 3.6, 0.4),
+  box("annex cover west", -5, 0.8, -20, 2, 1.6, 2),
+  box("annex cover east", 5, 0.8, -20, 2, 1.6, 2),
+  box("south wall", 0, 4.5, 20.25, 44, 9, 0.5),
+  ...[-1, 1].flatMap((side) => [
+    box("wing divider north " + side, side * 14, 1.8, -11, 0.4, 3.6, 10),
+    box("wing divider south " + side, side * 14, 1.8, 7, 0.4, 3.6, 10),
+    box(
+      "wing display north " + side,
+      side * 18,
+      0.8,
+      -10,
+      2.2,
+      1.6,
+      2.2,
+      "#b9a990",
+    ),
+    box(
+      "wing display south " + side,
+      side * 18,
+      0.8,
+      8,
+      2.2,
+      1.6,
+      2.2,
+      "#b9a990",
+    ),
+    box("wing cover " + side, side * 20, 1, -1, 2, 2, 4, "#536878"),
+  ]),
   ...decks.map((s, i) =>
     box(
       `upper slab ${i}`,

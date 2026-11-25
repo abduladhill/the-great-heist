@@ -12,14 +12,14 @@ async function move(page: Page, axis: "cx" | "cy", target: number) {
   await page.keyboard.down("ShiftLeft");
   await page.keyboard.down(key);
   try {
-    if (Math.abs(initial - target) > 1.5) {
+    if (Math.abs(initial - target) > 2.5) {
       await expect
         .poll(
           async () => {
             const n = Number(await dot.getAttribute(axis));
-            return positive ? n >= target - 1.2 : n <= target + 1.2;
+            return positive ? n >= target - 2.5 : n <= target + 2.5;
           },
-          { timeout: 15000, intervals: [30] },
+          { timeout: 45000, intervals: [30] },
         )
         .toBe(true);
     }
@@ -31,7 +31,7 @@ async function move(page: Page, axis: "cx" | "cy", target: number) {
           const n = Number(await dot.getAttribute(axis));
           return positive ? n >= target - 0.08 : n <= target + 0.08;
         },
-        { timeout: 15000, intervals: [30] },
+        { timeout: 45000, intervals: [30] },
       )
       .toBe(true);
   } finally {
@@ -52,7 +52,7 @@ async function hack(page: Page, count: number, final = false) {
     await page.keyboard.up("KeyE");
   }
 }
-for (const mission of ["vault", "data"] as const)
+for (const mission of ["vault", "data", "annex"] as const)
   test(`solo ${mission} contract can be completed and escaped with real controls`, async ({
     page,
   }) => {
@@ -69,7 +69,7 @@ for (const mission of ["vault", "data"] as const)
       auth.token,
     );
     try {
-      test.setTimeout(120000);
+      test.setTimeout(240000);
       await page.goto(
         `http://127.0.0.1:${(service.http.address() as AddressInfo).port}`,
       );
@@ -78,6 +78,23 @@ for (const mission of ["vault", "data"] as const)
       await page.getByLabel("Difficulty", { exact: true }).selectOption("easy");
       await page.getByRole("button", { name: "Ready up" }).click();
       await page.getByRole("button", { name: "Start heist" }).click();
+      if (mission === "annex") {
+        await move(page, "cy", 16);
+        await move(page, "cx", -16);
+        await move(page, "cy", -22);
+        await move(page, "cx", -18);
+        await hack(page, 1);
+        await move(page, "cy", -25);
+        await move(page, "cx", 0);
+        await hack(page, 2);
+        await move(page, "cx", 18);
+        await move(page, "cy", -22);
+        await hack(page, 3, true);
+        await page.screenshot({path:"test-results/annex-objective.png"});
+        await move(page, "cx", 16);
+        await move(page, "cy", 16);
+        await move(page, "cx", 0);
+      } else {
       await move(page, "cx", -11);
       await move(page, "cy", 6);
       await hack(page, 1);
@@ -106,6 +123,7 @@ for (const mission of ["vault", "data"] as const)
         await move(page, "cx", -9);
         await move(page, "cy", -10);
         await move(page, "cx", 9.5);
+      }
       }
       await page.screenshot({ path: `test-results/${mission}-objective.png` });
       await move(page, "cy", 13);
