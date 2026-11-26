@@ -1,3 +1,4 @@
+import { version } from "../../package.json";
 import { useEffect, useRef, useState } from "react";
 import { GameEngine } from "../game/engine";
 import type { HudState, Mode } from "../game/types";
@@ -316,7 +317,7 @@ export function App() {
               <span className="brand-sub">/ ORIGINALS</span>
             </a>
             <span className="version">
-              <i /> MUSEUM EDITION · v1.0
+              <i /> MUSEUM EDITION · v{version}
             </span>
           </header>
           <section className="hero">
@@ -382,7 +383,7 @@ export function App() {
           <footer>
             <span>DESKTOP · KEYBOARD & MOUSE</span>
             <span>Your crew. One museum. Explore together.</span>
-            <span>v1.0.0</span>
+            <span>v{version}</span>
           </footer>
         </div>
       ) : (
