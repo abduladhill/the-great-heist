@@ -13,7 +13,7 @@ export function createHeistServer(
 ) {
   const app = express();
   app.disable("x-powered-by");
-  app.get("/health", (_req, res) => res.json({ ok: true, version: "2.0.0" }));
+  app.get("/health", (_req, res) => res.json({ ok: true, version: "3.0.0" }));
   app.use(express.static(resolve("dist")));
   const http = createServer(app);
   const io = new Server<ClientEvents, ServerEvents>(http, {

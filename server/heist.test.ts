@@ -210,3 +210,9 @@ it("expanded wings connect to the lobby and research archives", () => {
     expect(path.at(-1)).toMatchObject(to);
   }
 });
+
+it("version 3 outer treasures and galleries are reachable",()=>{
+ for(const to of [{x:-30,y:0,z:-20},{x:30,y:0,z:-20},{x:0,y:0,z:-40},{x:-34,y:0,z:24},{x:34,y:0,z:24}]){
+  expect(findPath({x:0,y:0,z:12},to).at(-1)).toMatchObject(to);
+ }
+});

@@ -4,7 +4,7 @@ const server = createHeistServer({
 });
 const port = Number(process.env.PORT ?? 3001);
 server.http.listen(port, process.env.HOST ?? "0.0.0.0", () =>
-  console.log(`Great Heist Museum Edition v2.0: http://localhost:${port}`),
+  console.log(`Great Heist Museum Edition v3.0: http://localhost:${port}`),
 );
 for (const signal of ["SIGINT", "SIGTERM"] as const)
   process.on(signal, () => {

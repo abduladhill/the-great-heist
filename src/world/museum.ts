@@ -1,4 +1,5 @@
 import * as T from "three";
+import { treasureModel, stoneTexture } from "./exhibits";
 import { BOUNDS, solids, stairSteps, STAIR, UPPER } from "./layout";
 
 export function buildMuseum(scene: T.Scene) {
@@ -56,19 +57,60 @@ export function buildMuseum(scene: T.Scene) {
     mesh.rotation.y = rotation;
     scene.add(mesh);
   }
-  cube(0, -0.22, -4, 44, 0.44, 48, "#c0c2b5");
+  cube(0, -0.22, -8, 72, 0.44, 72, "#bbb5a7");
+  const stone = stoneTexture();
+  const floorMaterial = new T.MeshStandardMaterial({
+    map: stone,
+    color: "#ddd7c9",
+    roughness: 0.34,
+  });
+  const tiles = new T.InstancedMesh(
+    new T.BoxGeometry(1.98, 0.02, 1.98),
+    floorMaterial,
+    1296,
+  );
+  const matrix = new T.Matrix4();
+  let tileIndex = 0;
   for (let x = BOUNDS.x0 + 1; x < BOUNDS.x1; x += 2)
     for (let z = BOUNDS.z0 + 1; z < BOUNDS.z1; z += 2) {
-      cube(
-        x,
-        0.005,
-        z,
-        1.98,
-        0.01,
-        1.98,
-        (x + z) % 4 === 0 ? "#c4c6ba" : "#b5bcb3",
-      );
+      matrix.makeTranslation(x, 0.005, z);
+      tiles.setMatrixAt(tileIndex++, matrix);
     }
+  tiles.receiveShadow = true;
+  scene.add(tiles);
+  for (const side of [-1, 1]) {
+    label(
+      side < 0 ? "WORLD ANTIQUITIES" : "ROYAL TREASURY",
+      side * 29,
+      3,
+      -43.7,
+      10,
+    );
+    for (const z of [-30, -14, 4, 18]) {
+      const exhibit = treasureModel(Math.abs(z) % 3);
+      exhibit.position.set(side * 30, 1.3, z);
+      scene.add(exhibit);
+      const glass = new T.Mesh(
+        new T.BoxGeometry(2.65, 1.8, 2.05),
+        new T.MeshPhysicalMaterial({
+          color: "#dceaf0",
+          transparent: true,
+          opacity: 0.12,
+          roughness: 0.08,
+          metalness: 0.05,
+          depthWrite: false,
+        }),
+      );
+      glass.position.set(side * 30, 2.2, z);
+      scene.add(glass);
+      cube(side * 30, 3.14, z, 2.8, 0.08, 2.2, "#574f43");
+      label("AURELIA COLLECTION", side * 30, 1.05, z + 1.12, 2);
+    }
+    for (const z of [-38, -22, -6, 10, 24]) {
+      cube(side * 35.7, 3, z, 0.25, 5, 1, "#d8d0bb");
+      cube(side * 30, 6.5, z, 8, 0.12, 0.18, "#c9b681");
+    }
+  }
   label("03 / ANTIQUITIES", -18, 2.8, -27.8, 6);
   label("04 / MODERN ART", 18, 2.8, -27.8, 6);
   label("05 / RESEARCH ARCHIVES", 0, 2.8, -27.8, 9);
@@ -131,14 +173,14 @@ export function buildMuseum(scene: T.Scene) {
     cube(x, 8.7, 0, 0.18, 0.3, 32, "#223d43");
   for (const z of [-14, -7, 0, 7, 14])
     cube(0, 8.7, z, 28, 0.3, 0.18, "#223d43");
-  for (const x of [-13.94, 13.94])
+  for (const x of [-35.94, 35.94])
     for (const z of [-12, -4, 4, 12]) {
       cube(x, 6.6, z, 0.06, 2.7, 2.9, "#193a45");
       cube(x, 6.6, z, 0.08, 0.08, 3, "#d1bd8e");
     }
   // Central, faceted sculpture: procedural geometry, no external asset requests.
   const gold = mat("#d3a747", 0.65);
-  const gem = new T.Mesh(new T.IcosahedronGeometry(1.05, 0), gold);
+  const gem = new T.Mesh(new T.SphereGeometry(.92, 40, 24), gold);
   gem.position.set(0, 2.7, -1);
   gem.rotation.set(0.3, 0.4, 0.2);
   gem.castShadow = true;
@@ -147,14 +189,11 @@ export function buildMuseum(scene: T.Scene) {
   ring.position.copy(gem.position);
   ring.rotation.x = 0.55;
   scene.add(ring);
-  for (const b of solids.filter((b) => b.id.includes("plinth"))) {
-    const sculpture = new T.Mesh(
-      new T.OctahedronGeometry(0.63, 0),
-      mat(b.id.includes("upper") ? "#69aea6" : "#c99761", 0.35),
-    );
-    sculpture.position.set(b.x, b.y + b.h / 2 + 0.8, b.z);
-    sculpture.rotation.z = 0.2;
-    sculpture.castShadow = true;
+  for (const [i, b] of solids
+    .filter((b) => b.id.includes("plinth"))
+    .entries()) {
+    const sculpture = treasureModel(i);
+    sculpture.position.set(b.x, b.y + b.h / 2, b.z);
     scene.add(sculpture);
   }
   // Paintings, benches and plants are set against walls, outside walkways.
@@ -176,18 +215,18 @@ export function buildMuseum(scene: T.Scene) {
   const ambient = new T.HemisphereLight("#d8e9ed", "#64766d", 2.2);
   scene.add(ambient);
   const sun = new T.DirectionalLight("#ffe1ad", 3.1);
-  sun.position.set(6, 17, 8);
+  sun.position.set(10, 40, 15);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(2048, 2048);
+  sun.shadow.mapSize.set(4096, 4096);
   Object.assign(sun.shadow.camera, {
-    left: -22,
-    right: 22,
-    top: 24,
-    bottom: -24,
+    left: -26,
+    right: 26,
+    top: 28,
+    bottom: -28,
     near: 1,
-    far: 50,
+    far: 120,
   });
-  sun.shadow.normalBias = 0.04;
+  sun.shadow.normalBias = 0.08;
   scene.add(sun);
   const fill = new T.DirectionalLight("#7dbac5", 1.5);
   fill.position.set(-10, 10, -15);

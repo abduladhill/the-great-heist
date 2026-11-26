@@ -47,6 +47,9 @@ const ARTIFACTS: Point[] = [
   { x: 11, y: 4.5, z: -12 },
   { x: -18, y: 0, z: 4 },
   { x: 18, y: 0, z: 4 },
+  { x: -30, y: 0, z: -20 },
+  { x: 30, y: 0, z: -20 },
+  { x: 0, y: 0, z: -40 },
 ];
 interface Brain {
   route: number;

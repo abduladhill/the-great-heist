@@ -1,4 +1,5 @@
 import * as T from "three";
+import { treasureModel } from "./exhibits";
 function buildGuard() {
   const root = new T.Group();
   const navy = new T.MeshStandardMaterial({
@@ -153,21 +154,11 @@ export class HeistView {
           group,
         );
         ring.rotation.z = 0.3;
-      } else
-        add(
-          new T.OctahedronGeometry(0.38, 0),
-          new T.MeshStandardMaterial({
-            color: "#eccb7e",
-            emissive: "#8c641e",
-            emissiveIntensity: 0.35,
-            metalness: 0.6,
-            roughness: 0.3,
-          }),
-          0,
-          0.95,
-          0,
-          group,
-        );
+      } else {
+        const treasure = treasureModel(Number(l.id.split("-").at(-1)) || 0);
+        treasure.position.y = 0.35;
+        group.add(treasure);
+      }
       const marker = add(
         new T.ConeGeometry(0.13, 0.3, 4),
         material("#e3cb88"),

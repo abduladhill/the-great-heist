@@ -1,4 +1,4 @@
-# The Great Heist: Museum Edition — v2.0
+# The Great Heist: Museum Edition — v3.0
 
 A complete small-scope 3D heist game: one two-floor museum, private 2–4 player co-op, solo missions, guards, cameras, lasers, objectives, extraction, results, saved progression and rematches. Built with React, Vite, Three.js and Socket.IO.
 
@@ -117,3 +117,7 @@ The north research wing expands the ground floor from 28 × 32 m to 28 × 40 m (
 ## Version 2 expanded museum
 
 The museum footprint is now 44 × 48 m: 2,112 square metres, 2.36 times the original ground-floor footprint. Antiquities and Modern Art wings have display sculptures, cover and multiple connecting routes. The Research Wing contract spans the west wing, north archives and east wing. Two extra optional artifacts support alternate collection routes. Guards wear blue security uniforms, caps and badges; vision cones use amber for patrol, orange for investigation and red for pursuit. Nearby teammates holding E accelerate archive hacking, while solo play remains supported.
+
+## Version 3: Grand Museum
+
+The footprint is 72 × 72 m (5,184 square metres), 2.45 times version 2. New outer galleries, archive dividers, exhibition cases and additional treasures extend exploration routes. Gold vessels, ceramic vases and jeweled ornaments replace abstract collectible shapes. Stone-textured instanced flooring, glass cases, labels and architectural trim add detail without external asset downloads. This is procedural browser graphics, not photorealism. Version 3 is a local development build; the public game remains version 2.

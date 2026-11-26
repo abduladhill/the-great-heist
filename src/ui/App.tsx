@@ -44,12 +44,12 @@ function Map({
   return (
     <div className="map">
       <svg
-        viewBox="-24 -30 48 52"
+        viewBox="-38 -46 76 76"
         role="img"
         aria-label="Museum map with player position"
       >
         <path
-          d="M-22-28H22V20H-22Z"
+          d="M-36-44H36V28H-36Z"
           fill="#1d3638"
           stroke="#72918b"
           strokeWidth=".35"
@@ -376,7 +376,7 @@ export function App() {
             <p>Two floors. A thousand possibilities.</p>
             <div>
               <span>01 / 01</span>
-              <span>44 × 48 m &nbsp; ◇</span>
+              <span>72 × 72 m &nbsp; ◇</span>
             </div>
           </div>
           <footer>

@@ -13,7 +13,7 @@ export class GameEngine {
   readonly player = createPlayer();
   readonly input = new InputController();
   private scene = new T.Scene();
-  private camera = new T.PerspectiveCamera(58, 1, 0.07, 100);
+  private camera = new T.PerspectiveCamera(58, 1, 0.07, 160);
   private renderer: T.WebGLRenderer;
   private avatar = buildPlayer();
   private mode: Mode = "menu";
@@ -117,7 +117,7 @@ export class GameEngine {
     );
     host.appendChild(this.renderer.domElement);
     this.scene.background = new T.Color("#18343e");
-    this.scene.fog = new T.Fog("#29464a", 30, 65);
+    this.scene.fog = new T.Fog("#697571", 48, 120);
     this.artifacts = buildMuseum(this.scene);
     this.scene.add(this.avatar.root);
     this.resizeObserver = new ResizeObserver(this.resize);

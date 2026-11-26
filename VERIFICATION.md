@@ -45,3 +45,9 @@ Production build passed. All 52 unit/integration tests passed, including enlarge
 Eight browser scenarios passed across the final suite and targeted reruns: vault, data, research annex, two-player artifact heist and rematch, four-player session/reconnect, invalid room, movement/stairs and camera fallback. The first complete run had two mission-route failures; restoring sprint travel with slower approaches fixed these in targeted reruns. The new research contract was completed using real controls and extraction. These are local checks, not public deployment verification.
 
 Version 2 adds a 44 × 48 m footprint, two exhibition wings, research archives, optional artifacts, cooperative terminal hacking and distinct guard models/vision colours. The public deployment remains version 1 until this version is published.
+
+## Version 3 verification — 26 November 2026
+
+Production build and 53 unit/integration tests passed. New coverage verifies navigation from the lobby to outer galleries and treasures; boundary tests use the 72 × 72 m map. Two browser movement/camera scenarios and the Research Wing mission with real controls and extraction passed. Reviewed a rendered ground-floor screenshot and adjusted shadow coverage and central sculpture afterward; the subsequent build and mission test passed.
+
+The full eight-scenario browser suite was not rerun for this version. Vite reports a 504 kB uncompressed Three.js chunk (about 128 kB gzip). No internet deployment or low-end-device performance benchmark was performed. This release uses procedural geometry/materials, not scanned photorealistic assets.

@@ -1,6 +1,6 @@
 import type { Box, Surface } from "../game/types";
 export const UPPER = 4.5;
-export const BOUNDS = { x0: -22, x1: 22, z0: -28, z1: 20 };
+export const BOUNDS = { x0: -36, x1: 36, z0: -44, z1: 28 };
 export const SPAWN = { x: 0, y: 0, z: 12 };
 export const STAIR = { x0: 8, x1: 11, z0: -8, z1: 8 };
 export const decks: Surface[] = [
@@ -20,15 +20,15 @@ const box = (
   color = "#52666a",
 ): Box => ({ id, x, y, z, w, h, d, color });
 export const solids: Box[] = [
-  box("west wall", -22.25, 4.5, -4, 0.5, 9, 48.5),
-  box("east wall", 22.25, 4.5, -4, 0.5, 9, 48.5),
-  box("north wall", 0, 4.5, -28.25, 44, 9, 0.5),
+  box("west wall", -36.25, 4.5, -8, 0.5, 9, 72.5),
+  box("east wall", 36.25, 4.5, -8, 0.5, 9, 72.5),
+  box("north wall", 0, 4.5, -44.25, 72, 9, 0.5),
   box("annex divider center", 0, 1.8, -16, 12, 3.6, 0.4),
   box("annex divider west", -12, 1.8, -16, 4, 3.6, 0.4),
   box("annex divider east", 12, 1.8, -16, 4, 3.6, 0.4),
   box("annex cover west", -5, 0.8, -20, 2, 1.6, 2),
   box("annex cover east", 5, 0.8, -20, 2, 1.6, 2),
-  box("south wall", 0, 4.5, 20.25, 44, 9, 0.5),
+  box("south wall", 0, 4.5, 28.25, 72, 9, 0.5),
   ...[-1, 1].flatMap((side) => [
     box("wing divider north " + side, side * 14, 1.8, -11, 0.4, 3.6, 10),
     box("wing divider south " + side, side * 14, 1.8, 7, 0.4, 3.6, 10),
@@ -53,6 +53,32 @@ export const solids: Box[] = [
       "#b9a990",
     ),
     box("wing cover " + side, side * 20, 1, -1, 2, 2, 4, "#536878"),
+  ]),
+  ...[-1, 1].flatMap((side) => [
+    box(
+      "outer gallery partition " + side,
+      side * 24,
+      2,
+      -20,
+      0.5,
+      4,
+      30,
+      "#b7aea0",
+    ),
+    box("outer gallery south " + side, side * 24, 2, 15, 0.5, 4, 14, "#b7aea0"),
+    ...[-30, -14, 4, 18].map((z) =>
+      box(
+        "exhibition case " + side + " " + z,
+        side * 30,
+        0.65,
+        z,
+        2.8,
+        1.3,
+        2.2,
+        "#bdb7aa",
+      ),
+    ),
+    box("archive divider " + side, side * 22, 2, -36, 20, 4, 0.5, "#a5aa9f"),
   ]),
   ...decks.map((s, i) =>
     box(
