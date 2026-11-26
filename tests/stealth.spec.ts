@@ -7,6 +7,11 @@ test("top-down stealth view supports movement, camera switch and whistle",async(
  await page.getByLabel("Difficulty",{exact:true}).selectOption("easy");
  await page.getByRole("button",{name:"Ready up"}).click();
  await page.getByRole("button",{name:"Start heist"}).click();
+ await expect(page.locator(".mission-hud")).toHaveClass(/mission-compact/);
+ await page.keyboard.press("KeyH");
+ await expect(page.locator(".mission-hud")).toHaveClass(/mission-expanded/);
+ await page.keyboard.press("KeyH");
+ await expect(page.locator(".mission-hud")).toHaveClass(/mission-compact/);
  await page.keyboard.press("KeyF");
  await expect(page.locator("body")).toContainText("whistled");
  const dot=page.locator(".map svg>circle").last();
@@ -15,6 +20,14 @@ test("top-down stealth view supports movement, camera switch and whistle",async(
  await expect.poll(async()=>Number(await dot.getAttribute("cy"))).toBeLessThan(initial-.5);
  await page.keyboard.up("KeyW");
  await page.screenshot({path:"test-results/stealth-top-down.png"});
+ await page.mouse.move(700,450);
+ await page.mouse.down();
+ await page.mouse.move(900,450,{steps:10});
+ await page.mouse.up();
+ const beforeTurnX=Number(await dot.getAttribute("cx"));
+ await page.keyboard.down("KeyW");
+ await expect.poll(async()=>Math.abs(Number(await dot.getAttribute("cx"))-beforeTurnX)).toBeGreaterThan(.3);
+ await page.keyboard.up("KeyW");
  await page.keyboard.press("KeyV");
  await page.waitForTimeout(400);
  await page.screenshot({path:"test-results/stealth-third-person.png"});

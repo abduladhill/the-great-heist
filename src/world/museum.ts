@@ -213,6 +213,21 @@ export function buildMuseum(scene: T.Scene) {
   label("AURELIA", 0, 3, 15.9, 6, Math.PI);
   cube(0, 0.018, 11, 5, 0.025, 7, "#2d6866");
   for (const x of [-2.4, 2.4]) cube(x, 0.035, 11, 0.035, 0.02, 7, "#cfb57e");
+  // Gallery carpet runners and brass borders lead through the outer exhibition routes.
+  for(const side of [-1,1]){
+    cube(side*27,.035,-9,2.5,.025,60,side<0?"#563b3a":"#284b55");
+    for(const offset of [-1.22,1.22]) cube(side*27+offset,.055,-9,.035,.015,60,"#bfa66a");
+    for(const z of [-38,-22,-6,10,24]){
+      const base=new T.Mesh(new T.CylinderGeometry(.48,.55,.12,20),mat("#d3cbb9"));
+      base.position.set(side*34.7,.06,z);scene.add(base);
+      const column=new T.Mesh(new T.CylinderGeometry(.3,.35,5,20),mat("#ded6c3"));
+      column.position.set(side*34.7,2.5,z);column.castShadow=true;scene.add(column);
+    }
+    label(side<0?"WEST / ANTIQUITIES":"EAST / ROYAL TREASURY",side*29,2,-35.7,9);
+  }
+  for(const b of solids.filter(b=>b.id.includes("divider")||b.id.includes("partition"))){
+    cube(b.x,.14,b.z,b.w+.04,.28,b.d+.04,"#746854");
+  }
   const ambient = new T.HemisphereLight("#d8e9ed", "#64766d", 2.2);
   scene.add(ambient);
   const sun = new T.DirectionalLight("#ffe1ad", 3.1);

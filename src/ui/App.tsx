@@ -1,3 +1,4 @@
+import { solids } from "../world/layout";
 import { version } from "../../package.json";
 import { useEffect, useRef, useState } from "react";
 import { GameEngine } from "../game/engine";
@@ -13,7 +14,9 @@ import type { Profile } from "../game/heist";
 
 const controls = [
   ["W A S D", "Move"],
-  ["MOUSE", "Look around"],
+  ["MOUSE", "Turn (click to lock, or drag)"],
+  ["V / H", "Camera / objective details"],
+  ["F", "Whistle to distract"],
   ["SHIFT", "Sprint"],
   ["CTRL / C", "Hold to crouch"],
   ["SPACE", "Jump"],
@@ -64,6 +67,9 @@ function Map({
         <path d="M8 8V-8H11V8Z" fill="#9d8d60" />
         {[-6, -3, 0, 3, 6].map((z) => (
           <path key={z} d={`M8 ${z}h3`} stroke="#d5c294" strokeWidth=".15" />
+        ))}
+        {solids.filter(b => !b.id.includes("slab") && b.y-b.h/2 < (hud.floor === "Upper gallery" ? 4.5 : 0)+1.8 && b.y+b.h/2 > (hud.floor === "Upper gallery" ? 4.5 : 0)+.2).map(b=>(
+          <rect key={b.id} x={b.x-b.w/2} y={b.z-b.d/2} width={Math.max(.25,b.w)} height={Math.max(.25,b.d)} fill={b.id.includes("wall")||b.id.includes("partition")||b.id.includes("divider")?"#80968d":"#ab9671"} opacity=".7"/>
         ))}
         <circle cx="0" cy="-1" r="1.5" fill="#bfa975" />
         {room?.heist ? (
@@ -480,7 +486,7 @@ export function App() {
           ) : null}
           {!locked && mode === "playing" ? (
             <div className="look-hint">
-              V · Top-down / third-person   |   C · Sneak   |   Shift · Run (noisy)   |   F · Whistle to lure guards
+              Mouse / drag · Turn   |   H · Objectives   |   V · Camera   |   C · Sneak   |   Shift · Run (noisy)   |   F · Whistle to lure guards
             </div>
           ) : null}
         </>

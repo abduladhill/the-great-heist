@@ -1101,3 +1101,12 @@ kbd {
     padding: 25px;
   }
 }
+
+/* Compact objectives leave the playfield clear; H works under pointer lock. */
+.mission-hud.mission-compact { width:220px; padding:10px 14px; }
+.mission-compact .mission-progress { margin:6px 0; gap:8px; }
+.mission-compact .mission-progress strong { font-size:10px; }
+.mission-compact .mission-progress time { font-size:18px; }
+.objective-toggle { pointer-events:auto; background:none; border:0; color:#d5c493; padding:0; font:inherit; font-size:11px; cursor:pointer; display:flex; justify-content:space-between; width:100%; }
+.objective-toggle:focus-visible { outline:2px solid #e6ce89; outline-offset:4px; }
+.mission-expanded .objective-toggle { margin-bottom:10px; }

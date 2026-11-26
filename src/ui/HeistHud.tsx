@@ -1,3 +1,4 @@
+import {useState,useEffect} from "react";
 import { MISSIONS } from "../game/heist";
 import type { Member, RoomState } from "../network/protocol";
 export function HeistHud({
@@ -7,6 +8,14 @@ export function HeistHud({
   room: RoomState;
   me: Member | undefined;
 }) {
+  const [details,setDetails]=useState(false);
+  useEffect(()=>{
+    const toggle=(e:KeyboardEvent)=>{
+      if(e.code==="KeyH"&&!e.repeat&&!(e.target instanceof HTMLInputElement)) setDetails(v=>!v);
+    };
+    window.addEventListener("keydown",toggle);
+    return ()=>window.removeEventListener("keydown",toggle);
+  },[]);
   const h = room.heist;
   if (!h || !me) return null;
   const o = me.operative;
@@ -30,11 +39,14 @@ export function HeistHud({
           : "Collect artifact";
   return (
     <>
-      <div className="mission-hud">
-        <small>
+      <div className={details ? "mission-hud mission-expanded" : "mission-hud mission-compact"}>
+        <button className="objective-toggle" aria-expanded={details} onClick={()=>setDetails(v=>!v)}>
+          {details ? "− Hide details" : "+ Objective"} <kbd>H</kbd>
+        </button>
+        {details && <small>
           {room.contract.difficulty.toUpperCase()} /{" "}
           {MISSIONS[room.contract.mission].title}
-        </small>
+        </small>}
         <div className="mission-progress">
           <strong>
             {h.objectiveReady
@@ -46,11 +58,11 @@ export function HeistHud({
             {String(remaining % 60).padStart(2, "0")}
           </time>
         </div>
-        <p>
+        {details && <p>
           {h.objectiveReady
             ? "Hold E in the green extraction ring. Everyone must escape."
             : MISSIONS[room.contract.mission].description}
-        </p>
+        </p>}
         <div className="meter-label">
           ALARM <span>{Math.round(h.alarm)}%</span>
         </div>

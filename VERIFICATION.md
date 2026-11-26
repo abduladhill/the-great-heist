@@ -55,3 +55,7 @@ The full eight-scenario browser suite was not rerun for this version. Vite repor
 ## Version 4 verification — 26 November 2026
 
 Build and 54 unit/integration tests passed. Added tests cover whistle investigation, cooldown and captured-player rejection. A browser scenario passed for the default top-down view, keyboard movement, whistle feedback and switching back to third-person, without page errors. Reviewed the top-down screenshot and extended cutaway clipping to exhibits; rebuilt and reran the browser check. The complete multiplayer/mission browser suite has not been rerun for version 4. Public hosting remains version 3.
+
+### Version 4 control/HUD refinement
+
+Build and all 54 unit/integration tests passed. Browser check verified compact/expanded objectives via H, whistle feedback, keyboard movement, mouse-drag rotation changing subsequent movement direction, and camera switching without page errors. Reviewed the compact HUD and detailed minimap screenshot. Full mission regression suite was not rerun for this refinement.

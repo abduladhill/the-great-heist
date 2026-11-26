@@ -262,7 +262,7 @@ export class GameEngine {
       this.camera.lookAt(-1, 2, -3);
     } else if (this.input.tactical) {
       this.target.copy(this.avatar.root.position);
-      this.desired.copy(this.target).add(new T.Vector3(0,19,11));
+      this.desired.copy(this.target).add(new T.Vector3(Math.sin(this.input.yaw)*11,19,Math.cos(this.input.yaw)*11));
       this.camera.position.lerp(this.desired,1-Math.exp(-10*dt));
       this.camera.lookAt(this.target);
     } else {

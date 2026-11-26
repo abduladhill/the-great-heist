@@ -127,3 +127,7 @@ The footprint is 72 × 72 m (5,184 square metres), 2.45 times version 2. New out
 Default tactical camera follows the player from above; upper architecture and exhibits are cut away at the current floor. Press V to switch to the original third-person camera. WASD stays aligned to the tactical view. Press F during a heist to whistle: guards within 14 metres on the same floor investigate the sound for eight seconds, unless already chasing. Whistles have a six-second server-enforced cooldown and captured players cannot use them. Running remains audible; crouching reduces detection. Results award up to three display stars for escape, no lockdown, and finishing within half the time limit. Stars do not alter XP or persist separately.
 
 This is an original museum stealth game inspired by the accessible sneaking format, not a recreation of Robbery Bob's characters or levels. Version 4 is local; the public release remains version 3.
+
+### Control and presentation update
+
+Mouse turning now works in both camera modes: click the playfield for pointer lock or drag to turn. WASD movement follows the camera heading; V switches views without resetting heading. The objective panel starts compact, keeping progress, time and alarm visible; H or its button toggles details. The minimap draws actual floor-appropriate partitions and exhibits. Gallery runners, brass borders, columns, skirting and directional signs improve visual navigation.
