@@ -55,6 +55,7 @@ export interface ServerEvents {
   "profile:state": (data: { token: string; profile: Profile }) => void;
 }
 export interface ClientEvents {
+  "player:whistle": (ack: Ack) => void;
   "room:create": (data: { name: string; solo?: boolean }, ack: Ack) => void;
   "room:configure": (
     data: { mission: Contract["mission"]; difficulty: Contract["difficulty"] },

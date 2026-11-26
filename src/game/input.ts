@@ -2,6 +2,7 @@ import type { InputFrame } from "./types";
 export class InputController {
   private keys = new Set<string>();
   private jump = false;
+  tactical = true;
   yaw = 0;
   pitch = 0.27;
   active = false;
@@ -23,6 +24,10 @@ export class InputController {
       ].includes(e.code)
     )
       e.preventDefault();
+    if (e.code === "KeyV" && !e.repeat) {
+      this.tactical = !this.tactical; this.yaw = 0;
+      if(this.tactical && document.pointerLockElement) document.exitPointerLock();
+    }
     if (e.code === "Space" && !e.repeat) this.jump = true;
     this.keys.add(e.code);
   };
@@ -30,7 +35,7 @@ export class InputController {
     this.keys.delete(e.code);
   };
   private mouse = (e: MouseEvent) => {
-    if (this.active && (document.pointerLockElement || e.buttons === 1)) {
+    if (!this.tactical && this.active && (document.pointerLockElement || e.buttons === 1)) {
       this.yaw -= e.movementX * 0.0025;
       this.pitch = Math.max(
         -0.15,
@@ -49,8 +54,8 @@ export class InputController {
     window.addEventListener("blur", this.clear);
   }
   sample(dt: number): InputFrame {
-    if (this.keys.has("ArrowLeft")) this.yaw += dt * 1.7;
-    if (this.keys.has("ArrowRight")) this.yaw -= dt * 1.7;
+    if (!this.tactical && this.keys.has("ArrowLeft")) this.yaw += dt * 1.7;
+    if (!this.tactical && this.keys.has("ArrowRight")) this.yaw -= dt * 1.7;
     const frame = {
       forward: Number(this.keys.has("KeyW")) - Number(this.keys.has("KeyS")),
       right: Number(this.keys.has("KeyD")) - Number(this.keys.has("KeyA")),

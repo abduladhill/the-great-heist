@@ -109,6 +109,7 @@ export class GameEngine {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = T.PCFSoftShadowMap;
+    this.renderer.localClippingEnabled = true;
     this.renderer.toneMapping = T.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
     this.renderer.domElement.setAttribute(
@@ -177,6 +178,9 @@ export class GameEngine {
             network.room.heist,
             network.room.contract,
           );
+          this.heistView.root.traverse(o=>{
+            if(o instanceof T.Mesh) for(const m of Array.isArray(o.material)?o.material:[o.material]) m.clippingPlanes=[this.artifacts.cutaway];
+          });
           this.scene.add(this.heistView.root);
         }
         this.heistView.update(network.room.heist, dt);
@@ -256,6 +260,11 @@ export class GameEngine {
         13,
       );
       this.camera.lookAt(-1, 2, -3);
+    } else if (this.input.tactical) {
+      this.target.copy(this.avatar.root.position);
+      this.desired.copy(this.target).add(new T.Vector3(0,19,11));
+      this.camera.position.lerp(this.desired,1-Math.exp(-10*dt));
+      this.camera.lookAt(this.target);
     } else {
       this.target
         .copy(this.avatar.root.position)
@@ -298,6 +307,7 @@ export class GameEngine {
         .addScaledVector(this.direction, safeDistance);
       this.camera.lookAt(this.target);
     }
+    this.artifacts.cutaway.constant = this.mode !== "menu" && this.input.tactical ? p.y + 2.2 : 100;
     this.renderer.render(this.scene, this.camera);
     this.hudTimer += dt;
     if (this.hudTimer > 0.12) {

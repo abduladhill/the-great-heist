@@ -216,3 +216,12 @@ it("version 3 outer treasures and galleries are reachable",()=>{
   expect(findPath({x:0,y:0,z:12},to).at(-1)).toMatchObject(to);
  }
 });
+
+it("whistling lures nearby guards and enforces a cooldown",()=>{
+ const f=setup();Object.assign(f.member.state,{x:3,y:0,z:4});
+ f.director.whistle(f.member);
+ expect(f.director.state.guards[0].mode).toBe("investigate");
+ expect(()=>f.director.whistle(f.member)).toThrow("Wait");
+ f.member.operative.captured=true;
+ expect(()=>f.director.whistle(f.member)).toThrow("cannot");
+});

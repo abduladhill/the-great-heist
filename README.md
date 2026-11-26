@@ -1,4 +1,4 @@
-# The Great Heist: Museum Edition — v3.0
+# The Great Heist: Museum Edition — v4.0
 
 A complete small-scope 3D heist game: one two-floor museum, private 2–4 player co-op, solo missions, guards, cameras, lasers, objectives, extraction, results, saved progression and rematches. Built with React, Vite, Three.js and Socket.IO.
 
@@ -121,3 +121,9 @@ The museum footprint is now 44 × 48 m: 2,112 square metres, 2.36 times the orig
 ## Version 3: Grand Museum
 
 The footprint is 72 × 72 m (5,184 square metres), 2.45 times version 2. New outer galleries, archive dividers, exhibition cases and additional treasures extend exploration routes. Gold vessels, ceramic vases and jeweled ornaments replace abstract collectible shapes. Stone-textured instanced flooring, glass cases, labels and architectural trim add detail without external asset downloads. This is procedural browser graphics, not photorealism. Version 3 is a local development build; the public game remains version 2.
+
+## Version 4: top-down stealth
+
+Default tactical camera follows the player from above; upper architecture and exhibits are cut away at the current floor. Press V to switch to the original third-person camera. WASD stays aligned to the tactical view. Press F during a heist to whistle: guards within 14 metres on the same floor investigate the sound for eight seconds, unless already chasing. Whistles have a six-second server-enforced cooldown and captured players cannot use them. Running remains audible; crouching reduces detection. Results award up to three display stars for escape, no lockdown, and finishing within half the time limit. Stars do not alter XP or persist separately.
+
+This is an original museum stealth game inspired by the accessible sneaking format, not a recreation of Robbery Bob's characters or levels. Version 4 is local; the public release remains version 3.

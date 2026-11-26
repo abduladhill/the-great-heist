@@ -62,6 +62,7 @@ interface Brain {
 export class HeistDirector {
   state: HeistState;
   private brains = new Map<string, Brain>();
+  private whistles = new Map<string,number>();
   private laserCooldown = new Map<string, number>();
   constructor(
     private room: Room,
@@ -153,6 +154,18 @@ export class HeistDirector {
   }
   private raise(value: number) {
     this.state.alarm = Math.min(100, this.state.alarm + value);
+  }
+  whistle(p: ServerMember) {
+    if(!this.active(p)||this.state.result) throw new Error("You cannot whistle now.");
+    if(this.state.elapsed < (this.whistles.get(p.id) ?? 0)) throw new Error("Wait before whistling again.");
+    this.whistles.set(p.id,this.state.elapsed+6);
+    for(const g of this.state.guards){
+      if(Math.abs(g.y-p.state.y)>1.6 || distance(g,p.state)>14 || g.mode==="chase") continue;
+      const brain=this.brains.get(g.id)!;
+      brain.lastSeen={...p.state};brain.searchUntil=this.state.elapsed+8;brain.nextPlan=0;
+      g.mode="investigate";
+    }
+    this.state.notice=p.name+" whistled. Move away before security arrives.";
   }
   gadget(p: ServerMember, gadget: Gadget) {
     const h = this.state,

@@ -165,6 +165,7 @@ export class MultiplayerClient {
   interact(held: boolean) {
     if (this.connected) this.socket.emit("player:interact", held);
   }
+  whistle() { return this.request(this.socket.timeout(5000).emitWithAck("player:whistle")); }
   gadget(gadget: Gadget) {
     return this.request(
       this.socket.timeout(5000).emitWithAck("player:gadget", gadget),

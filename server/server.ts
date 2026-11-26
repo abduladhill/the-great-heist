@@ -13,7 +13,7 @@ export function createHeistServer(
 ) {
   const app = express();
   app.disable("x-powered-by");
-  app.get("/health", (_req, res) => res.json({ ok: true, version: "3.0.0" }));
+  app.get("/health", (_req, res) => res.json({ ok: true, version: "4.0.0" }));
   app.use(express.static(resolve("dist")));
   const http = createServer(app);
   const io = new Server<ClientEvents, ServerEvents>(http, {
@@ -106,6 +106,11 @@ export function createHeistServer(
     socket.on("player:interact", (held) => {
       if (current) store.interact(current.room, current.member, held);
     });
+    socket.on("player:whistle", ack => action(ack, () => {
+      const {room,member}=requireRoom();
+      if(room.phase!=="playing" || !room.director) throw new Error("Start a heist first.");
+      room.director.whistle(member);ack({ok:true});broadcast(room);
+    }));
     socket.on("player:gadget", (gadget, ack) =>
       action(ack, () => {
         const { room, member } = requireRoom();

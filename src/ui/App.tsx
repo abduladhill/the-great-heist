@@ -236,6 +236,7 @@ export function App() {
           e.preventDefault();
           network.current?.interact(true);
         }
+        if(e.code === "KeyF") void networkAction(() => network.current!.whistle());
         if (e.code === "KeyQ" || e.code === "KeyR")
           void networkAction(() =>
             network.current!.gadget(e.code === "KeyQ" ? "smoke" : "jammer"),
@@ -479,7 +480,7 @@ export function App() {
           ) : null}
           {!locked && mode === "playing" ? (
             <div className="look-hint">
-              Click the museum to capture the mouse · or drag to look / use ← →
+              V · Top-down / third-person   |   C · Sneak   |   Shift · Run (noisy)   |   F · Whistle to lure guards
             </div>
           ) : null}
         </>

@@ -3,13 +3,14 @@ import { treasureModel, stoneTexture } from "./exhibits";
 import { BOUNDS, solids, stairSteps, STAIR, UPPER } from "./layout";
 
 export function buildMuseum(scene: T.Scene) {
+  const cutaway = new T.Plane(new T.Vector3(0,-1,0), 100);
   const materials = new Map<string, T.MeshStandardMaterial>();
   function mat(color: string, metalness = 0) {
     const key = color + metalness;
     if (!materials.has(key))
       materials.set(
         key,
-        new T.MeshStandardMaterial({ color, roughness: 0.72, metalness }),
+        new T.MeshStandardMaterial({ color, roughness: 0.72, metalness, clippingPlanes:[cutaway], clipShadows:true }),
       );
     return materials.get(key)!;
   }
@@ -234,7 +235,10 @@ export function buildMuseum(scene: T.Scene) {
   const glow = new T.PointLight("#ffc66e", 14, 12, 2);
   glow.position.set(0, 4, -1);
   scene.add(glow);
-  return { gem, ring };
+  scene.traverse(o=>{
+    if(o instanceof T.Mesh) for(const m of Array.isArray(o.material)?o.material:[o.material]) m.clippingPlanes=[cutaway];
+  });
+  return { gem, ring, cutaway };
 }
 
 export function buildPlayer(color = "#4aa89d") {

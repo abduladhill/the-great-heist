@@ -51,3 +51,7 @@ Version 2 adds a 44 × 48 m footprint, two exhibition wings, research archives, o
 Production build and 53 unit/integration tests passed. New coverage verifies navigation from the lobby to outer galleries and treasures; boundary tests use the 72 × 72 m map. Two browser movement/camera scenarios and the Research Wing mission with real controls and extraction passed. Reviewed a rendered ground-floor screenshot and adjusted shadow coverage and central sculpture afterward; the subsequent build and mission test passed.
 
 The full eight-scenario browser suite was not rerun for this version. Vite reports a 504 kB uncompressed Three.js chunk (about 128 kB gzip). No internet deployment or low-end-device performance benchmark was performed. This release uses procedural geometry/materials, not scanned photorealistic assets.
+
+## Version 4 verification — 26 November 2026
+
+Build and 54 unit/integration tests passed. Added tests cover whistle investigation, cooldown and captured-player rejection. A browser scenario passed for the default top-down view, keyboard movement, whistle feedback and switching back to third-person, without page errors. Reviewed the top-down screenshot and extended cutaway clipping to exhibits; rebuilt and reran the browser check. The complete multiplayer/mission browser suite has not been rerun for version 4. Public hosting remains version 3.

@@ -127,6 +127,10 @@ export function Results({
           {r.won ? "A clean getaway." : "The museum wins."}
         </h2>
         <p>{r.reason}</p>
+        <p aria-label="Heist rating">
+          {r.won ? "★".repeat(1 + Number(!room.heist!.alarmTriggered) + Number(room.heist!.elapsed < room.heist!.duration * .5)) : "No stars"}
+          {" · Escape / No lockdown / Under half time"}
+        </p>
         <div className="reward-grid">
           <div>
             <small>EXPERIENCE</small>
